@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverFinder.App", "DriverFinder.App\DriverFinder.App.csproj", "{9BD0CDD1-25DB-4A39-86AD-D3A329A84AB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverFinder.Lib", "DriverFinder.Lib\DriverFinder.Lib.csproj", "{4994EE56-C39D-48EA-A482-8B375D0E81E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverFinder.Tests", "DriverFinder.Tests\DriverFinder.Tests.csproj", "{8371EE44-FA68-4977-8E95-2C6291B93916}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9BD0CDD1-25DB-4A39-86AD-D3A329A84AB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BD0CDD1-25DB-4A39-86AD-D3A329A84AB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BD0CDD1-25DB-4A39-86AD-D3A329A84AB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BD0CDD1-25DB-4A39-86AD-D3A329A84AB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4994EE56-C39D-48EA-A482-8B375D0E81E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4994EE56-C39D-48EA-A482-8B375D0E81E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4994EE56-C39D-48EA-A482-8B375D0E81E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4994EE56-C39D-48EA-A482-8B375D0E81E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8371EE44-FA68-4977-8E95-2C6291B93916}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8371EE44-FA68-4977-8E95-2C6291B93916}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8371EE44-FA68-4977-8E95-2C6291B93916}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8371EE44-FA68-4977-8E95-2C6291B93916}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
