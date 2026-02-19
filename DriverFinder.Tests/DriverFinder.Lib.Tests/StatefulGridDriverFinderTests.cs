@@ -1,9 +1,8 @@
 using DriverFinder.Lib.Finders;
 using DriverFinder.Lib.Models;
 using NUnit.Framework;
-using System.Linq;
 
-namespace DriverFinder.Tests;
+namespace DriverFinder.Lib.Tests;
 
 [TestFixture]
 public class StatefulGridDriverFinderTests

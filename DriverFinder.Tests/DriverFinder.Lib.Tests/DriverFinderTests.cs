@@ -2,7 +2,7 @@ using DriverFinder.Lib.Finders;
 using DriverFinder.Lib.Models;
 using NUnit.Framework;
 
-namespace DriverFinder.Tests;
+namespace DriverFinder.Lib.Tests;
 
 [TestFixture]
 public class DriverFinderTests
