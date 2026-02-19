@@ -2,6 +2,7 @@ using DriverFinder.Lib.Finders;
 using DriverFinder.Lib.Models;
 using DriverFinder.WebApp.Exceptions;
 using DriverFinder.WebApp.Settings;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Point = DriverFinder.Lib.Models.Point;
 
@@ -10,7 +11,8 @@ namespace DriverFinder.WebApp.Services;
 public class OrderService(
     IOptions<MapSettings> mapSettings,
     DriverService driverService,
-    StatefulGridDriverFinder driverFinder)
+    StatefulGridDriverFinder driverFinder,
+    ILogger<OrderService> logger)
 {
     private readonly MapSettings mapSettings = mapSettings.Value;
     private readonly HttpClient httpClient = new();
@@ -19,17 +21,20 @@ public class OrderService(
     {
         if (order.Location.X < 0 || order.Location.X >= mapSettings.N || order.Location.Y < 0 || order.Location.Y >= mapSettings.M)
         {
+            logger.LogWarning("Поступил заказ с некорректными координатами: ({X}, {Y})", order.Location.X, order.Location.Y);
             throw new InvalidCoordinatesException("Координаты некорректны");
         }
 
         if (driverService.GetDrivers().Count == 0)
         {
+            logger.LogWarning("Заказ на ({X}, {Y}) отклонен: свободные водители отсутствуют на карте", order.Location.X, order.Location.Y);
             throw new NoDriversAvailableException("Свободных водителей нет");
         }
 
         var candidateDrivers = driverFinder.FindNearest(order, 10);
         if (candidateDrivers.Count == 0)
         {
+            logger.LogWarning("Для заказа на ({X}, {Y}) не найдено ближайших водителей", order.Location.X, order.Location.Y);
             throw new NoDriversAvailableException("Не удалось найти подходящих водителей поблизости");
         }
         
@@ -39,17 +44,23 @@ public class OrderService(
         int randomIndex;
         try
         {
-            var response = await httpClient.GetStringAsync("http://www.randomnumberapi.com/api/v1.0/random?min=0&max=" + (bestDrivers.Count - 1) + "&count=1");
-            randomIndex = int.Parse(response.Trim('[', ']'));
+            var response = await httpClient.GetStringAsync("http://www.randomnumberapi.com/api/v1.0/random?min=0&max=" + (bestDrivers.Count) + "&count=1");
+            logger.LogInformation("Внешнее API вернуло: {Response}", response);
+            randomIndex = int.Parse(response.Trim().Trim('[', ']'));
+            logger.LogInformation("Для заказа на ({X}, {Y}) выбрано случайное число {Index} через внешнее API", order.Location.X, order.Location.Y, randomIndex);
         }
-        catch
+        catch (Exception ex)
         {
             randomIndex = new Random().Next(0, bestDrivers.Count);
+            logger.LogWarning(ex, "Ошибка внешнего API для заказа на ({X}, {Y}). Используется локальный Random: {Index}", order.Location.X, order.Location.Y, randomIndex);
         }
 
         var selectedDriver = bestDrivers[randomIndex];
         var route = GetRoute(selectedDriver, order);
-        return (selectedDriver, (int)bestDistance, route);
+        logger.LogInformation("Для заказа на ({X}, {Y}) назначен водитель {DriverId} на расстоянии {Distance}", 
+            order.Location.X, order.Location.Y, selectedDriver.Id, bestDistance);
+        
+        return (selectedDriver, bestDistance, route);
     }
 
     private List<Point> GetRoute(Driver driver, Order order)
