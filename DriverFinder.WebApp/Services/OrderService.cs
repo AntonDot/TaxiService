@@ -3,6 +3,7 @@ using DriverFinder.Lib.Models;
 using DriverFinder.WebApp.Exceptions;
 using DriverFinder.WebApp.Settings;
 using Microsoft.Extensions.Options;
+using Point = DriverFinder.Lib.Models.Point;
 
 namespace DriverFinder.WebApp.Services;
 
@@ -14,7 +15,7 @@ public class OrderService(
     private readonly MapSettings mapSettings = mapSettings.Value;
     private readonly HttpClient httpClient = new();
 
-    public async Task<(Driver? driver, int distance, List<(int, int)>? route)> FindDriverForOrder(Order order)
+    public async Task<(Driver? driver, int distance, List<Point>? route)> FindDriverForOrder(Order order)
     {
         if (order.Location.X < 0 || order.Location.X >= mapSettings.N || order.Location.Y < 0 || order.Location.Y >= mapSettings.M)
         {
@@ -51,9 +52,9 @@ public class OrderService(
         return (selectedDriver, (int)bestDistance, route);
     }
 
-    private static List<(int, int)> GetRoute(Driver driver, Order order)
+    private List<Point> GetRoute(Driver driver, Order order)
     {
-        var route = new List<(int, int)>();
+        var route = new List<Point>();
         var currentX = driver.Location.X;
         var currentY = driver.Location.Y;
 
@@ -75,7 +76,7 @@ public class OrderService(
             {
                 currentY--;
             }
-            route.Add((currentX, currentY));
+            route.Add(new Point(currentX, currentY));
         }
         return route;
     }
