@@ -15,4 +15,8 @@
         <ProjectReference Include="..\DriverFinder.Lib\DriverFinder.Lib.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="DriverFinder.Tests" />
+    </ItemGroup>
+
 </Project>
