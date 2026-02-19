@@ -1,4 +1,5 @@
 using DriverFinder.Lib.Finders;
+using DriverFinder.WebApp.Middleware;
 using DriverFinder.WebApp.Services;
 using DriverFinder.WebApp.Settings;
 using Microsoft.Extensions.Options;
@@ -7,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.Configure<MapSettings>(builder.Configuration.GetSection("MapSettings"));
+builder.Services.Configure<ParallelLimitSettings>(builder.Configuration.GetSection("Settings"));
+
 builder.Services.AddSingleton<DriverService>();
 builder.Services.AddSingleton<StatefulGridDriverFinder>(sp =>
 {
@@ -28,7 +31,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();//for future improvement
+app.UseMiddleware<ConcurrencyLimiterMiddleware>();
+
+app.UseAuthorization();
 
 app.MapControllers();
 
