@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverFinder.Lib", "DriverF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverFinder.Tests", "DriverFinder.Tests\DriverFinder.Tests.csproj", "{8371EE44-FA68-4977-8E95-2C6291B93916}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverFinder.WebApp", "DriverFinder.WebApp\DriverFinder.WebApp.csproj", "{DCD52FA8-A226-48A9-9AFC-ECB6082DC6DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{8371EE44-FA68-4977-8E95-2C6291B93916}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8371EE44-FA68-4977-8E95-2C6291B93916}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8371EE44-FA68-4977-8E95-2C6291B93916}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCD52FA8-A226-48A9-9AFC-ECB6082DC6DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCD52FA8-A226-48A9-9AFC-ECB6082DC6DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCD52FA8-A226-48A9-9AFC-ECB6082DC6DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCD52FA8-A226-48A9-9AFC-ECB6082DC6DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
