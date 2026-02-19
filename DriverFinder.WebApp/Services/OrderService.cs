@@ -3,7 +3,6 @@ using DriverFinder.Lib.Models;
 using DriverFinder.WebApp.Exceptions;
 using DriverFinder.WebApp.Settings;
 using Microsoft.Extensions.Options;
-using Point = DriverFinder.Lib.Models.Point;
 
 namespace DriverFinder.WebApp.Services;
 
@@ -12,12 +11,12 @@ public class OrderService(
     DriverService driverService,
     StatefulGridDriverFinder driverFinder)
 {
-    private readonly MapSettings _mapSettings = mapSettings.Value;
-    private readonly HttpClient _httpClient = new();
+    private readonly MapSettings mapSettings = mapSettings.Value;
+    private readonly HttpClient httpClient = new();
 
     public async Task<(Driver? driver, int distance, List<(int, int)>? route)> FindDriverForOrder(Order order)
     {
-        if (order.Location.X < 0 || order.Location.X >= _mapSettings.N || order.Location.Y < 0 || order.Location.Y >= _mapSettings.M)
+        if (order.Location.X < 0 || order.Location.X >= mapSettings.N || order.Location.Y < 0 || order.Location.Y >= mapSettings.M)
         {
             throw new InvalidCoordinatesException("Координаты некорректны");
         }
@@ -30,8 +29,6 @@ public class OrderService(
         var candidateDrivers = driverFinder.FindNearest(order, 10);
         if (candidateDrivers.Count == 0)
         {
-            // This case might occur if drivers are present but outside the search radius of the finder, which is unlikely but possible.
-            // It's better to be explicit.
             throw new NoDriversAvailableException("Не удалось найти подходящих водителей поблизости");
         }
         
@@ -41,7 +38,7 @@ public class OrderService(
         int randomIndex;
         try
         {
-            var response = await _httpClient.GetStringAsync("http://www.randomnumberapi.com/api/v1.0/random?min=0&max=" + (bestDrivers.Count - 1) + "&count=1");
+            var response = await httpClient.GetStringAsync("http://www.randomnumberapi.com/api/v1.0/random?min=0&max=" + (bestDrivers.Count - 1) + "&count=1");
             randomIndex = int.Parse(response.Trim('[', ']'));
         }
         catch
@@ -54,7 +51,7 @@ public class OrderService(
         return (selectedDriver, (int)bestDistance, route);
     }
 
-    private List<(int, int)> GetRoute(Driver driver, Order order)
+    private static List<(int, int)> GetRoute(Driver driver, Order order)
     {
         var route = new List<(int, int)>();
         var currentX = driver.Location.X;
