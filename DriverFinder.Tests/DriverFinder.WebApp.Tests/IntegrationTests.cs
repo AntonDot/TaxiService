@@ -58,19 +58,20 @@ public class IntegrationTests
     }
 
     [Test]
-    public async Task AddDriver_CoordinatesOccupied_ReturnsBadRequest()
+    public async Task AddMultipleDriversToSameCoordinates_ShouldBeAllowed()
     {
         // Размещаем водителя 3 на (20, 20)
         var driver3 = new DriverDto { Id = 3, X = 20, Y = 20 };
-        await client.PostAsJsonAsync("/Driver", driver3);
+        var response3 = await client.PostAsJsonAsync("/Driver", driver3);
+        Assert.That(response3.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 
         // Пытаемся разместить водителя 4 на те же координаты (20, 20)
         var driver4 = new DriverDto { Id = 4, X = 20, Y = 20 };
-        var response = await client.PostAsJsonAsync("/Driver", driver4);
+        var response4 = await client.PostAsJsonAsync("/Driver", driver4);
+        Assert.That(response4.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         
-        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
-        var message = await response.Content.ReadAsStringAsync();
-        Assert.That(message, Is.EqualTo("Здесь уже находится другой водитель"));
+        var message4 = await response4.Content.ReadAsStringAsync();
+        Assert.That(message4, Is.EqualTo("Координаты успешно добавлены"));
     }
 
     [Test]

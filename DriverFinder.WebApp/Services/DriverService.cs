@@ -33,11 +33,6 @@ public class DriverService(
             throw new InvalidCoordinatesException("Координаты некорректны");
         }
 
-        if (drivers.Any(d => d.Value.Location.X == x && d.Value.Location.Y == y && d.Key != id))
-        {
-            logger.LogWarning("Координаты ({X}, {Y}) уже заняты другим водителем. Попытка для водителя {Id}", x, y, id);
-            throw new CoordinatesOccupiedException("Здесь уже находится другой водитель");
-        }
 
         if (drivers.TryGetValue(id, out var driverToUpdate))
         {

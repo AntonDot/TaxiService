@@ -21,9 +21,5 @@ public class DriverController(DriverService driverService) : ControllerBase
         {
             return BadRequest(ex.Message);
         }
-        catch (CoordinatesOccupiedException ex)
-        {
-            return BadRequest(ex.Message);
-        }
     }
 }
